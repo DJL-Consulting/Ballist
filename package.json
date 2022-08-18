@@ -1,0 +1,20 @@
+{
+  "name": "ballist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJL-Consulting/Ballist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DJL-Consulting/Ballist/issues"
+  },
+  "homepage": "https://github.com/DJL-Consulting/Ballist#readme"
+}
