@@ -72,6 +72,11 @@ namespace BallistNew
        public Double AdjustMOA { get; set; }
 
         /// <summary>
+        /// Adustment to hti dead-on at this range (milradians/milrad)
+        /// </summary>
+        public Double AdjustMil { get; set; }
+
+        /// <summary>
         /// Energy of bullet at this ragne (ft x lb)
         /// </summary>
         public int Energy { get; set; }
@@ -158,6 +163,8 @@ namespace BallistNew
 
             var Degree = (S2 - sintheta) * 180 / 3.1415927;
             ret.AdjustMOA = Degree * 60;
+
+            ret.AdjustMil = (S2 - sintheta) * 1000;
 
             ret.PointOfImact = FlightY(T, Vy, C, p, Po, Hs) * 12.0;
 
