@@ -55,7 +55,7 @@ code {
 
 .tr-hover-class:hover  {
   font-weight: bold;
-  color: #009879;
+  color: red;
 }
 
 .styled-table tbody tr.active-row {
