@@ -236,6 +236,7 @@ const g1 = [
     TimeOfFlight = 0.032;
     PointOfImact = 1.23;
     AdjustMOA = 1.33;
+    AdjustMil = 0.58;
     Energy = 3122;
   
     constructor(distance) {
@@ -300,6 +301,10 @@ const g1 = [
   
         var Degree = (S2 - this.sintheta) * 180 / 3.1415927;
         ret.AdjustMOA = Degree * 60;
+
+        ret.AdjustMil = (S2 - this.sintheta) * 1000;
+
+
   
         ret.PointOfImact = this.FlightY(wrk.T, this.Vy, this.C, this.p, this.Po, this.Hs) * 12.0;
   

@@ -40,6 +40,7 @@ class Form extends React.Component {
     return (
       <center>
       <div class="container">
+      <h3>Load Data</h3>
       <form onSubmit={this.handleSubmit} action="">
 
       <div class="row">
@@ -190,24 +191,25 @@ class Form extends React.Component {
 }
 
 const BallistList = (props) =>  (
-  <div class="row">
-    <div className="col-25"> &nbsp;</div>
-    <div className="col-75">
-      <table className='styled-table' >
-        <thead>
-          <th>Range<br />Yards</th>
-          <th>Velocity<br />ft/s</th>
-          <th>Energy<br />ft*lb</th>
-          <th>Time of Flight<br />s</th>
-          <th>Drop<br />in</th>
-          <th>Adjust<br />MOA</th>
-        </thead>
-        <tbody>
-          { props.ballisticData.map(brow => <BallistRow key = {brow.Distance} {...brow} />)}
-        </tbody>        
-      </table>        
-    </div>
-  </div>
+<div>
+    <center>  
+    <table className='styled-table' >
+      <thead>
+        <th>Range<br />Yards</th>
+        <th>Velocity<br />ft/s</th>
+        <th>Energy<br />ft*lb</th>
+        <th>TOF<br />s</th>
+        <th>Drop<br />in</th>
+        <th>Adjust<br />MOA</th>
+        <th>Adjust<br />MRAD</th>
+      </thead>
+      <tbody>
+        { props.ballisticData.map(brow => <BallistRow key = {brow.Distance} {...brow} />)}
+      </tbody>        
+    </table>  
+  </center>      
+</div>
+
 )
 
 
@@ -239,7 +241,10 @@ class BallistRow extends React.Component {
           {this.Format(brow.PointOfImact, 1)}
         </td>
         <td>
-        {this.Format((brow.AdjustMOA === "Infinity" ? "N/A":brow.AdjustMOA), 2)}        
+          {this.Format((brow.AdjustMOA === "Infinity" ? "N/A":brow.AdjustMOA), 2)}        
+        </td>
+        <td>
+          {this.Format((brow.AdjustMil === "Infinity" ? "N/A":brow.AdjustMil), 2)}        
         </td>
       </tr>
      );
@@ -262,14 +267,28 @@ class App extends React.Component {
     ld.SightHeight = 2.0;
     ld.SightInRange = 100;
     ld.SightHeight = 1.5;
-    
+   
     return (
       <div>
-        <div align='center'><h1><b>Ballistics Calculator</b></h1></div>
-            <Form onSubmit={this.loadData} /> 
-            <hr />
-            <BallistList ballisticData={this.state.ballisticData}/>
-      </div>        
+        <center><h1><b>Ballistics Calculator</b></h1> </center>
+        <table>
+          <tr>
+            <td width="3%"></td>
+            <td width="40%" valign='top'>
+              <Form onSubmit={this.loadData} /> 
+            </td>  
+            <td width="1%"></td>
+            <td width="30%" valign='top' style={{ visibility: this.state.ballisticData.length == 0 ? "hidden" : "visible" }}>
+            <div className='containerr'>
+                <center><h3>Results</h3></center>
+                <BallistList ballisticData={this.state.ballisticData}/>
+              </div>
+            </td>
+            <td width="3%"></td>
+          </tr>          
+        </table>
+      </div>
+
       )
   }
 }
