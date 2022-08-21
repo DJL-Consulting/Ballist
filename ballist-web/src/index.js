@@ -68,14 +68,16 @@ class Form extends React.Component {
     this.loadBallist();    
   }
 
-  loadBallist()
+  async loadBallist()
   {
+    console.log(this.state.Loads);
+
     if (!(parseInt(this.state.MaxRange) > parseInt(this.state.RangeIncrement)))
     {
        alert("Max range must be greater than increment!");
        return;
     }
-    
+
     if (typeof this.state.Name !== 'undefined' && this.state.Name != "")
     {
       this.state.Brands = [];
@@ -83,9 +85,11 @@ class Form extends React.Component {
       this.state.Bullets = [];
       this.state.Loads = [];
 
-      this.setCookie(this.state.Name, JSON.stringify(this.state));
+      await this.setCookie(this.state.Name, JSON.stringify(this.state));
 
-      this.setState({ Loads: this.get_cookies()});
+      await this.setState({ Loads: this.get_cookies()});
+
+      this.NameChanged(this.state.Name);
     }
 
     var bData = [];
@@ -154,7 +158,7 @@ class Form extends React.Component {
       
       <h3>Load Data</h3>
       
-      <div class="row">
+      <div class="row" style={{ visibility: (this.state.Loads[0] != '' ?  "visible" : "hidden"), height: "1px", scale: ".001, 0.001" }}>
       <div class="col-25" />
       <div class="col-25">
           <label><b>Saved Loads</b></label> 
@@ -163,12 +167,12 @@ class Form extends React.Component {
           <select onChange={ event => this.getLoad(event.target.value) }>
               <option selected= {this.state.Name == "" ? "selected":""} disabled="disabled">Choose Saved Load...</option>
                 {this.state.Loads.map((option) => (
-                  <option value={option}>{option}</option>
+                  <option value={option} selected={this.state.Name == option ? "selected":""}>{option}</option>
                 ))}
               </select>
         </div>
       <div class="col-10">
-        <button onClick={this.deleteCookie} className="small" style={{ visibility: (this.state.ShowDelete == true ?  "visible" : "hidden") }}>Delete</button>
+        <button onClick={this.deleteCookie} className="small">Delete</button>
       </div>
 
       </div>
