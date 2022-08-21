@@ -17,6 +17,10 @@
     Calibers = [];
     Brands = [];
     Bullets = [];
+    Loads = [];
+    SelectedBullet = "";
+    ShowDelete = false;
+    Name = "";
     l = 200;
     t = 200;
   }
@@ -104,7 +108,6 @@
   
     CalcEnergy(V)
     {
-        console.log("Bw = "+this.Bw+" V = "+V);
         return (0.5 * this.Bw / g * V * V);  //// E = .5mV^2 (ft * lb)
     }  
   

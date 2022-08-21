@@ -80,6 +80,23 @@ button {
   width: 200px;
 }
 
+button.small {
+
+  /* remove default behavior */
+  appearance:none;
+  -webkit-appearance:none;
+
+  /* usual styles */
+  display: inline;
+  padding:10px;
+  border:none;
+  background-color:#3F51B5;
+  color:#fff;
+  font-weight:600;
+  border-radius:5px;
+  width: 60px;
+}
+
 /* Style inputs, select elements and textareas */
 input[type=text], select, textarea{
   width: 100%;
@@ -169,6 +186,12 @@ label.light {
 .col-75 {
   float: left;
   width: 65%;
+  margin-top: 6px;
+}
+
+.col-55 {
+  float: left;
+  width: 45%;
   margin-top: 6px;
 }
 

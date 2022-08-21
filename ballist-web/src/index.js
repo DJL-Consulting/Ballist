@@ -4,36 +4,110 @@ import './index.css';
 import {bulletData} from './Bullets.js';
 import {BallistCalc, RangeData} from './Ballist.js'
 import {Load} from './Ballist.js'
-//import {RangeData} from './Ballist.js'
-//import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 class Form extends React.Component {
-  state =  new Load();
-  handleSubmit = async (event) => {
-    event.preventDefault();  // disable default
+  constructor(props)
+  {
+    super(props);
+    this.state = new Load();
+    var nm = [];
+    
+    nm = this.get_cookies();
+
+    this.state.Loads = nm;
+  }
+
+  get_cookies()
+  {
+    var keyValuePairs = document.cookie.split(';');
+    var names = [];
+    for(var i = 0; i < keyValuePairs.length; i++) {
+        names.push(keyValuePairs[i].substring(0, keyValuePairs[i].indexOf('=')));
+        var value = keyValuePairs[i].substring(keyValuePairs[i].indexOf('=')+1);
+    }
+    return names;
+  }
+
+  setCookie(cname, cvalue) {
+    console.log("Saving "+cname);
+    const d = new Date();
+    d.setTime(d.getTime() + (10000*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  deleteCookie = (e) => {
+    e.preventDefault();
+    //e.preventDefault();  // disable default
+    console.log("Deleting "+this.state.Name);
+    document.cookie = this.state.Name+"=; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+    this.setState({Loads: this.get_cookies()});
+  }
+
+  getCookie(cname) {
+    var keyValuePairs = document.cookie.split(';');
+    for(var i = 0; i < keyValuePairs.length; i++) {
+        if (keyValuePairs[i].substring(0, keyValuePairs[i].indexOf('=')) === cname)
+          return keyValuePairs[i].substring(keyValuePairs[i].indexOf('=')+1);
+    }
+
+    return "";
+  }
+
+  async getLoad(name) {
+    let ck = this.getCookie(name);
+    var nl = JSON.parse(ck);
+
+    nl.Loads = this.get_cookies();
+
+    await this.setState(nl);
+
+    this.NameChanged(name);
+  
+    this.loadBallist();    
+  }
+
+  loadBallist()
+  {
+    if (!(parseInt(this.state.MaxRange) > parseInt(this.state.RangeIncrement)))
+    {
+       alert("Max range must be greater than increment!");
+       return;
+    }
+    
+    if (typeof this.state.Name !== 'undefined' && this.state.Name != "")
+    {
+      this.state.Brands = [];
+      this.state.Calibers = [];
+      this.state.Bullets = [];
+      this.state.Loads = [];
+
+      this.setCookie(this.state.Name, JSON.stringify(this.state));
+
+      this.setState({ Loads: this.get_cookies()});
+    }
 
     var bData = [];
 
-    console.log('Calculating ballistics');
-
     var calc = new BallistCalc(this.state);
 
-    for (var range = this.state.RangeIncrement; range <= this.state.MaxRange; range += this.state.RangeIncrement)
+    for (var range = parseInt(this.state.RangeIncrement); range <= parseInt(this.state.MaxRange); range += parseInt(this.state.RangeIncrement))
     {
       var ballistData = calc.GetBallisticsAtRange(range);
       bData.push(ballistData);
-
-      if (1==0)  //turn on/off debug output
-      {
-        console.log("Distance: " + ballistData.Distance);
-        console.log("Time of Flight: " + ballistData.TimeOfFlight);
-        console.log("Velocity: " + ballistData.Velocity);
-        console.log("Drop: " + ballistData.PointOfImact);
-        console.log("Adjust MOA " + ballistData.AdjustMOA);
-      }
     }
     this.props.onSubmit(bData);
+  }
+
+  handleSubmit = async (event) => {
+    event.preventDefault();  // disable default
+    this.loadBallist();
+  }
+
+  NameChanged(newName){
+    var gc = this.getCookie(newName);
+    this.setState({ Name: newName, ShowDelete: (this.getCookie(newName) !== "") });
   }
 
   closeBulletBox()
@@ -43,27 +117,13 @@ class Form extends React.Component {
 
   getDropdowns()
   {
-    //const unique = [...new Set(bulletData.map(item => item.Caliber))];
     this.setState( { Calibers: [...new Set(bulletData.map(item => item.Caliber))] } );
     this.setState( { Brands: [...new Set(bulletData.map(item => item.Manufacturer))] } );
+
     var bc = document.getElementById("BCbox").getBoundingClientRect();
     const bbb1 = document.getElementById("Bulletbox").getBoundingClientRect();  
-    const bb = document.getElementById("Bulletbox");
 
-    //console.log(bb);
-
-    //console.log("BCR "+ bc.right);
-    console.log("BB1 t/b "+bbb1.top+' -- '+bbb1.bottom);
-    
-
-    //bb.style.position = "absolute";
-    
-    this.setState({l: bc.right + 20, t: bc.top - (bbb1.height/2)});
-
-    //bb.style.left = (4 * bc.right.toString) + "px"; // bc.right; // 2000;// bc.style.left + bc.offsetWidth; //+ bc.width;
-    //bb.style.top = bc.top.toString + "px"; //(bc.top+bc.bottom); ///2;
-    const bbb2 = document.getElementById("Bulletbox").getBoundingClientRect();    
-    console.log("BB2 t/b "+bbb2.top+' -- '+bbb2.bottom);    
+    this.setState({l: bc.right + 20, t: bc.top - (bbb1.height/2)});   
     this.setState( { ShowBulletPicker:true }); 
    }
 
@@ -83,17 +143,35 @@ class Form extends React.Component {
    {
     var brandBullets = (brand == "" ? bulletData : bulletData.filter(({ Manufacturer }) => Manufacturer.includes(brand)));
     this.setState( { Bullets: (cal == "" ? brandBullets : brandBullets.filter(({ Caliber }) => Caliber.includes(cal))) });   
-    //console.log(bullets);
-
    }
 
   render() {   
     return (
       <center>
       <div class="container">
-      <h3>Load Data</h3>
+                           
       <form onSubmit={this.handleSubmit} action="">
+      
+      <h3>Load Data</h3>
+      
+      <div class="row">
+      <div class="col-25" />
+      <div class="col-25">
+          <label><b>Saved Loads</b></label> 
+        </div>        
+        <div className="col-55">
+          <select onChange={ event => this.getLoad(event.target.value) }>
+              <option selected= {this.state.Name == "" ? "selected":""} disabled="disabled">Choose Saved Load...</option>
+                {this.state.Loads.map((option) => (
+                  <option value={option}>{option}</option>
+                ))}
+              </select>
+        </div>
+      <div class="col-10">
+        <button onClick={this.deleteCookie} className="small" style={{ visibility: (this.state.ShowDelete == true ?  "visible" : "hidden") }}>Delete</button>
+      </div>
 
+      </div>
       <div id="Bulletbox" class="bulletPicker" style={{ visibility: (this.state.ShowBulletPicker == true ?  "visible" : "hidden"), left: this.state.l, top: this.state.t }}>
        <center><h3>Bullet Picker</h3></center>
        <div class="row">
@@ -116,7 +194,7 @@ class Form extends React.Component {
         </div>
         <div className="col-35"> 
           <select onChange={ event => this.setBrand(event.target.value) }>
-          <option selected="selected" disabled="disabled">Choose Brand...</option>
+          <option selected= {this.state.Brand == "" ? "selected":""} disabled="disabled">Choose Brand...</option>
             {this.state.Brands.map((option) => (
               <option value={option}>{option}</option>
             ))}
@@ -129,7 +207,11 @@ class Form extends React.Component {
           <label><b>Bullet</b></label> 
         </div>
         <div className="col-75"> 
-          <select onChange={ event => this.setState({ BallisticCoefficient: this.state.Bullets[event.target.value].BC, BulletWeight: this.state.Bullets[event.target.value].Weight, ShowBulletPicker: false }) }>
+          <select onChange={ event => this.setState({ 
+                                            BallisticCoefficient: this.state.Bullets[event.target.value].BC, 
+                                            BulletWeight: this.state.Bullets[event.target.value].Weight, 
+                                            ShowBulletPicker: false,
+                                            SelectedBullet: this.state.Bullets[event.target.value].Caliber + " " + this.state.Bullets[event.target.value].Manufacturer + " "+this.state.Bullets[event.target.value].Bullet}) }>
           <option selected="selected" disabled="disabled">Choose Bullet...</option>
             {this.state.Bullets.map((option, index) => (
               <option value={index}>{(this.state.Caliber == "" ? option.Caliber+ ' cal ': '') + (this.state.Brand == "" ? option.Manufacturer+ ' ': '') + option.Bullet+' '+option.Weight+' Grain ' +option.BC+' BC'}</option>
@@ -172,7 +254,7 @@ class Form extends React.Component {
       </div>
       <div class="col-5" />
       <div class="col-25l">
-        <label> G1</label>
+        <label> G1 <i>{this.state.SelectedBullet}</i></label>
       </div>
      </div>     
 
@@ -241,7 +323,7 @@ class Form extends React.Component {
                onChange={ event => this.setState({ SightHeight: event.target.value })} 
                onFocus={ event => this.closeBulletBox() }
                required />
-      </div>
+      </div> 
       <div class="col-5" />
       <div class="col-25l">
         <label>Inches</label>
@@ -282,10 +364,23 @@ class Form extends React.Component {
       <div class="col-25l">
         <label>Yards (ex: 50, 100, 150, 200, 250...)</label>
       </div>
-     </div>     
-<br />
-<center>
-    <button>Calculate</button>
+     </div> 
+
+     <div class="row" style={{ visibility: (this.state.Loads.length > 0 ?  "visible" : "hidden") }}>
+      <div class="col-25" />
+      <div class="col-25">
+        <label><b>Load Name</b></label>
+      </div>
+      <div class="col-55">
+      <input type="text" placeholder="Optional name to save load for future use" 
+               value={this.state.Name} 
+               onChange={ event => this.NameChanged(event.target.value) } 
+               onFocus={ event => this.closeBulletBox() } /> 
+      </div>
+     </div>              
+    <br />
+    <center>
+       <button>Calculate</button>
      </center>
 
       </form>
