@@ -21,6 +21,7 @@
     SelectedBullet = "";
     ShowDelete = false;
     Name = "";
+    DisplayLoad = "";
     l = 200;
     t = 200;
   }

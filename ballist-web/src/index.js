@@ -16,6 +16,7 @@ class Form extends React.Component {
     nm = this.get_cookies();
 
     this.state.Loads = nm;
+    //this.state.DisplayLoad = "";
   }
 
   get_cookies()
@@ -23,7 +24,8 @@ class Form extends React.Component {
     var keyValuePairs = document.cookie.split(';');
     var names = [];
     for(var i = 0; i < keyValuePairs.length; i++) {
-        names.push(keyValuePairs[i].substring(0, keyValuePairs[i].indexOf('=')));
+        if (keyValuePairs[i].substring(0, keyValuePairs[i].indexOf('=')) != '__test')
+          names.push(keyValuePairs[i].substring(0, keyValuePairs[i].indexOf('=')));
         var value = keyValuePairs[i].substring(keyValuePairs[i].indexOf('=')+1);
     }
     return names;
@@ -60,18 +62,17 @@ class Form extends React.Component {
     var nl = JSON.parse(ck);
 
     nl.Loads = this.get_cookies();
+    nl.DisplayLoad = name;
 
     await this.setState(nl);
 
-    this.NameChanged(name);
-  
+    await this.setState({Name: name, DisplayLoad: name});
+
     this.loadBallist();    
   }
 
   async loadBallist()
   {
-    console.log(this.state.Loads);
-
     if (!(parseInt(this.state.MaxRange) > parseInt(this.state.RangeIncrement)))
     {
        alert("Max range must be greater than increment!");
@@ -84,12 +85,13 @@ class Form extends React.Component {
       this.state.Calibers = [];
       this.state.Bullets = [];
       this.state.Loads = [];
+      this.state.DisplayLoad = this.state.Name;
 
       await this.setCookie(this.state.Name, JSON.stringify(this.state));
 
       await this.setState({ Loads: this.get_cookies()});
 
-      this.NameChanged(this.state.Name);
+      //this.NameChanged(this.state.Name);
     }
 
     var bData = [];
@@ -107,11 +109,6 @@ class Form extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();  // disable default
     this.loadBallist();
-  }
-
-  NameChanged(newName){
-    var gc = this.getCookie(newName);
-    this.setState({ Name: newName, ShowDelete: (this.getCookie(newName) !== "") });
   }
 
   closeBulletBox()
@@ -158,16 +155,16 @@ class Form extends React.Component {
       
       <h3>Load Data</h3>
       
-      <div class="row" style={{ visibility: (this.state.Loads[0] != '' ?  "visible" : "hidden"), height: "1px", scale: ".001, 0.001" }}>
+      <div class="row">
       <div class="col-25" />
       <div class="col-25">
           <label><b>Saved Loads</b></label> 
         </div>        
         <div className="col-55">
-          <select onChange={ event => this.getLoad(event.target.value) }>
-              <option selected= {this.state.Name == "" ? "selected":""} disabled="disabled">Choose Saved Load...</option>
+          <select value={this.state.DisplayLoad != '' ? this.state.DisplayLoad : "Choose Saved Load..."} onChange={ event => this.getLoad(event.target.value) }>
+              <option>Choose Saved Load...</option>
                 {this.state.Loads.map((option) => (
-                  <option value={option} selected={this.state.Name == option ? "selected":""}>{option}</option>
+                  <option value={option}>{option}</option>
                 ))}
               </select>
         </div>
@@ -370,7 +367,7 @@ class Form extends React.Component {
       </div>
      </div> 
 
-     <div class="row" style={{ visibility: (this.state.Loads.length > 0 ?  "visible" : "hidden") }}>
+     <div class="row">
       <div class="col-25" />
       <div class="col-25">
         <label><b>Load Name</b></label>
@@ -378,7 +375,7 @@ class Form extends React.Component {
       <div class="col-55">
       <input type="text" placeholder="Optional name to save load for future use" 
                value={this.state.Name} 
-               onChange={ event => this.NameChanged(event.target.value) } 
+               onChange={ event => this.setState({ Name: event.target.value}) } 
                onFocus={ event => this.closeBulletBox() } /> 
       </div>
      </div>              
