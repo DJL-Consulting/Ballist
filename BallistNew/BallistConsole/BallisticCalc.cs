@@ -42,6 +42,19 @@ namespace BallistNew
         ///Bullet Weight (grains)
         /// </summary>
         public Double BulletWeight { get; set; }   
+
+        public int ClicksPerInch { get; set; }
+
+        public int StartRange { get; set; }
+
+        public int EndRange { get; set; }
+
+        public int RangeIncrement { get; set; }
+
+        public string Caliber {  get; set; }
+        public string Brand {  get; set; }
+        public string Bullet { get; set; }
+
     }
 
     public class RangeData
@@ -113,12 +126,12 @@ namespace BallistNew
 
         public BallistCalc()
         {
-            LoadG("D:\\G1.dat");
+            LoadG("G1.dat");
         }
 
         public BallistCalc(Load myLoad)
         {
-            LoadG("D:\\G1.dat");
+            LoadG("G1.dat");
             this.SetVariables(myLoad);
         }
 
@@ -187,7 +200,7 @@ namespace BallistNew
 
         private void LoadG(string inFile)
         {
-            var g = File.ReadAllText("D:\\G1.json");
+            var g = File.ReadAllText("G1.json");
 
             g1 = JsonConvert.DeserializeObject<List<g1Data>>(g);            
         }
