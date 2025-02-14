@@ -1,0 +1,164 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:BallistMobile"
+             x:Class="BallistMobile.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#FFC107</Color>
+            <Color x:Key="PrimaryDark">#FFA000</Color>
+            <Color x:Key="Accent">#00BCD4</Color>
+
+            <Color x:Key="LightBackground">#FAF9F8</Color>
+            <Color x:Key="DarkBackground">Black</Color>
+
+            <Color x:Key="CardBackground">White</Color>
+            <Color x:Key="CardBackgroundDark">#1C1C1E</Color>
+
+            <Color x:Key="LabelText">#1F1F1F</Color>
+            <Color x:Key="LabelTextDark">White</Color>
+
+            <Style ApplyToDerivedTypes="True" TargetType="Page">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}" />
+            </Style>
+
+            <Style ApplyToDerivedTypes="True" TargetType="NavigationPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}" />
+                <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="BaseLabel">
+                <Setter Property="FontFamily" Value="OpenSansRegular" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LabelText}, Dark={StaticResource LabelTextDark}}" />
+            </Style>
+
+
+
+
+
+            <Style TargetType="Entry" x:Key="RegistrationBox">
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="WidthRequest" Value="400" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LabelText}, Dark={StaticResource LabelTextDark}}" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+            </Style>
+
+            <Style x:Key="MicroLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+
+            <Style x:Key="SmallLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="12"/>
+            </Style>
+
+            <Style x:Key="MediumLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
+            <Style x:Key="LargeLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="TitleLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+
+            <Style x:Key="MessageListLabel" BasedOn="{StaticResource BaseLabel}" TargetType="Label">
+                <Setter Property="FontSize" Value="18"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding HasUnread}" Value="True" TargetType="Label">
+                        <Setter Property="FontAttributes" Value="Bold"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style ApplyToDerivedTypes="True" TargetType="RefreshView">
+                <Setter Property="RefreshColor" Value="{StaticResource Primary}" />
+                <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}" />
+            </Style>
+
+            <Style x:Key="WarningButtonOutline" TargetType="Button">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}" />
+                <Setter Property="BackgroundColor" Value="Red" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="20" />
+            </Style>
+
+            <Style x:Key="ButtonOutline" TargetType="Button">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="CornerRadius" Value="20" />
+            </Style>
+            <Style x:Key="InfoFrame" TargetType="Frame">
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="{StaticResource Accent}" />
+                <Setter Property="CornerRadius" Value="15" />
+            </Style>
+            <Style x:Key="CardView" TargetType="Frame">
+                <Setter Property="BorderColor" Value="#DDDDDD" />
+                <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}" />
+                <Setter Property="Padding" Value="0,5,5,5" />
+                <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource CardBackground}, Dark={StaticResource CardBackgroundDark}}" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="IsClippedToBounds" Value="True"/>
+            </Style>
+
+            <!-- Stuff from other demo app below -->
+            <Style x:Key="MessageContainerStyle" TargetType="Grid">
+                <Setter Property="Margin" Value="8" />
+            </Style>
+
+            <Style x:Key="SenderContainerStyle" TargetType="Grid">
+                <Setter Property="HeightRequest" Value="42" />
+                <Setter Property="WidthRequest" Value="42" />
+                <Setter Property="VerticalOptions" Value="End" />
+            </Style>
+
+            <Style x:Key="SenderEllipseStyle" TargetType="Ellipse">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HeightRequest" Value="30" />
+                <Setter Property="WidthRequest" Value="30" />
+            </Style>
+
+            <Style x:Key="SenderImageStyle" TargetType="Image">
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="12" />
+            </Style>
+
+            <Color x:Key="MessageColor">#F7F7F8</Color>
+
+            <Style x:Key="MessageShapeStyle" TargetType="BoxView">
+                <Setter Property="BackgroundColor" Value="{StaticResource MessageColor}" />
+                <Setter Property="CornerRadius" Value="24, 24, 0, 24" />
+            </Style>
+
+            <Style x:Key="MessageTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontFamily" Value="Metropolis Regular" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Padding" Value="12, 0" />
+            </Style>
+
+            <Style x:Key="TimeTextStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontFamily" Value="Metropolis Regular" />
+                <Setter Property="TextColor" Value="Gray" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="10, 0, 12, 0" />
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+
+
+</Application>

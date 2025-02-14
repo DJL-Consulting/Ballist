@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BallistConsole", "BallistCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BallistWin", "BallistWin\BallistWin.csproj", "{C25A4030-FF82-428E-B1CA-AB3D6BE7A8DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BallistMobile", "BallistMobile\BallistMobile.csproj", "{F2825979-F9B3-4BFC-991F-D95482373347}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,12 @@ Global
 		{C25A4030-FF82-428E-B1CA-AB3D6BE7A8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C25A4030-FF82-428E-B1CA-AB3D6BE7A8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C25A4030-FF82-428E-B1CA-AB3D6BE7A8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2825979-F9B3-4BFC-991F-D95482373347}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:BallistMobile"
+             x:DataType="viewmodel:MainPageViewModel"
+             x:Class="BallistMobile.MainPage">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
+    <ScrollView>
+        <Grid
+            IsVisible="{Binding IsEditing}"
+           
+            ColumnSpacing="5"
+            RowDefinitions="5,Auto,Auto,Auto, Auto,Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto,*"
+            VerticalOptions="Start"
+            HorizontalOptions="Center"
+            RowSpacing="10"
+            Padding="15"
+            BackgroundColor="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}">
+
+            <Label 
+                Grid.Row="1"
+                Text="Ballistic Coefficient (G1 BC)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="2" 
+                Text="{Binding BC}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="G1 BC" >
+            </Entry>
+            
+            <Label 
+                Grid.Row="3"
+                Text="Bullet Weight (grains)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="4" 
+                Text="{Binding BulletWeight}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="in grains" >
+            </Entry>
+
+            <Label 
+                Grid.Row="5"
+                Text="Muzzle Velocity (ft/s)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="6" 
+                Text="{Binding MuzzleVelocity}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="in feet per second" >
+            </Entry>
+
+            <Label 
+                Grid.Row="7"
+                Text="Sight-In Height (impact above line of sight, inches)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="8" 
+                Text="{Binding SightInHeight}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="inches above line of sight (- for below)" >
+            </Entry>
+
+            <Label 
+                Grid.Row="9"
+                Text="Sight-In Range (yards)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="10" 
+                Text="{Binding SightInRange}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="in yards" >
+            </Entry>
+
+            <Label 
+                Grid.Row="11"
+                Text="Height of Sight/Scope Above Bore Center (inches)"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="12" 
+                Text="{Binding HeightOfSight}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="in inches" >
+            </Entry>
+
+            <Label 
+                Grid.Row="13"
+                Text="Scope Clicks per Inch/MOA @ 100 Yards"
+                HorizontalOptions="Start"
+                Style="{StaticResource MediumLabel}" />
+
+            <Entry 
+                Grid.Row="14" 
+                Text="{Binding ClicksPerInch}" 
+                Style="{StaticResource RegistrationBox}"
+                Placeholder="typically 4 clicks per 1 inch/MOA" >
+            </Entry>
+
+            <Button
+                Grid.Row="15"
+                Grid.Column="0"
+                
+                HorizontalOptions="Center"
+                x:Name="CounterBtn"
+                Text="Calculate" 
+                Style="{StaticResource ButtonOutline}"                
+                 />
+
+        </Grid>
+
+            
+           
+
+
+
+
+
+
+    </ScrollView>
+
+</ContentPage>
